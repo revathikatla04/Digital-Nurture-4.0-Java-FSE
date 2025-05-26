@@ -1,0 +1,111 @@
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header styles */
+#mainHeader {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+/* Navigation styles */
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 10px;
+  background-color: #333;
+}
+.navList li a {
+  color: white;
+  text-decoration: none;
+}
+.navList li a:hover {
+  text-decoration: underline;
+}
+
+/* Event Card Styles */
+.eventCard {
+  border: 1px solid #ccc;
+  margin: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Typography */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+h2 {
+  font-size: 2em;
+}
+.description {
+  font-style: italic;
+  font-weight: 400;
+  text-align: justify;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+/* Table Styling */
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #666;
+}
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Form Input Highlight */
+.highlight {
+  outline: 2px solid #007BFF;
+  padding: 5px;
+}
+
+/* News Section (Multi-column) */
+.news-column {
+  column-count: 2;
+  column-gap: 30px;
+  column-rule: 1px solid gray;
+  padding: 20px;
+  background-color: #fff3cd;
+  margin: 20px;
+}
+
+/* Responsive Media Query */
+@media (max-width: 768px) {
+  .navList {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .eventCard {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .news-column {
+    column-count: 1;
+  }
+}

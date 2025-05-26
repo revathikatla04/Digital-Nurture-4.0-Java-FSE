@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Community Event Portal</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Internal CSS -->
+  <style>
+    /* Set background color with internal CSS */
+    body {
+      background-color: #f0f8ff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Inline style -->
+  <h1 style="color: red;">Community Events</h1>
+
+  <header id="mainHeader">
+    <h2>Welcome to the Local Community Event Portal</h2>
+  </header>
+
+  <nav>
+    <ul class="navList">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Events</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="eventCard">
+    <h3>Music Festival</h3>
+    <p class="description">Join us for an evening of fun, food, and music in the central park.</p>
+  </section>
+
+  <section class="eventCard">
+    <h3>Art Exhibition</h3>
+    <p class="description">Local artists showcase their work. Free entry!</p>
+  </section>
+
+  <section class="news">
+    <h2>Community News</h2>
+    <div class="news-column">
+      <p>Lots of exciting events are coming this summer. From food fairs to cultural nights, don't miss out!</p>
+      <p>Volunteers needed for the community cleanup drive next weekend.</p>
+    </div>
+  </section>
+
+  <table>
+    <thead>
+      <tr><th>Event</th><th>Date</th><th>Location</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Music Fest</td><td>June 20</td><td>Central Park</td></tr>
+      <tr><td>Art Expo</td><td>July 5</td><td>Gallery Hall</td></tr>
+    </tbody>
+  </table>
+
+  <form>
+    <label for="email">Subscribe:</label>
+    <input type="email" id="email" class="highlight" placeholder="Enter your email" />
+  </form>
+
+</body>
+</html>
