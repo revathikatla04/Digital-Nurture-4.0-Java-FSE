@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Local Community Event Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef;
+      margin: 20px;
+    }
+    #welcomeBanner {
+      background-color: lightblue;
+      padding: 10px;
+      text-align: center;
+    }
+    .highlight {
+      background-color: yellow;
+      font-weight: bold;
+    }
+    table img {
+      width: 100px;
+      border: 2px solid #333;
+      cursor: pointer;
+    }
+    form {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #aaa;
+    }
+    video {
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+  <script>
+    function validatePhone(el) {
+      const phone = el.value;
+      if (!/^\d{10}$/.test(phone)) {
+        alert("Please enter a valid 10-digit phone number");
+        el.focus();
+      }
+    }
+
+    function showFee() {
+      const eventType = document.getElementById('eventType').value;
+      const fees = { music: 100, art: 50, tech: 200 };
+      document.getElementById('feeOutput').textContent = fees[eventType] + " INR";
+      localStorage.setItem("preferredEvent", eventType);
+    }
+
+    function showConfirmation() {
+      document.getElementById("outputMessage").textContent = "Registration submitted!";
+    }
+
+    function enlargeImage(el) {
+      el.style.width = el.style.width === "100px" ? "200px" : "100px";
+    }
+
+    function countChars(el) {
+      document.getElementById("charCount").textContent = el.value.length + " characters";
+    }
+
+    function videoReady() {
+      document.getElementById("videoStatus").textContent = "🎬 Video ready to play!";
+    }
+
+    window.onbeforeunload = function () {
+      return "You have unsaved changes. Are you sure you want to leave?";
+    };
+
+    function loadPreference() {
+      const pref = localStorage.getItem("preferredEvent");
+      if (pref) {
+        document.getElementById("eventType").value = pref;
+        showFee();
+      }
+    }
+
+    function clearPrefs() {
+      localStorage.clear();
+      sessionStorage.clear();
+      alert("Preferences cleared");
+    }
+
+    function getLocation() {
+      const output = document.getElementById("locationOutput");
+      if (!navigator.geolocation) {
+        output.textContent = "Geolocation not supported.";
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          output.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;
+        },
+        (err) => {
+          output.textContent = "Error getting location: " + err.message;
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000
+        }
+      );
+    }
+  </script>
+</head>
+<body onload="loadPreference()">
+
+<!-- Navigation -->
+<nav>
+  <a href="#home">Home</a> |
+  <a href="#events">Events</a> |
+  <a href="#contact">Contact</a> |
+  <a href="help.html" target="_blank">Help</a>
+</nav>
+
+<!-- Welcome -->
+<div id="welcomeBanner">
+  <h1>Welcome to the Local Event Portal</h1>
+  <p>Special Offer: <span style="color:red; font-weight:bold;">Free entry</span> for the first 50 visitors!</p>
+</div>
+
+<!-- Events -->
+<section id="events" class="highlight">
+  <h2>Past Event Gallery</h2>
+  <table>
+    <caption>Community Event Highlights</caption>
+    <tr>
+      <td><img src="https://via.placeholder.com/100" alt="Music Fest" title="Music Fest" ondblclick="enlargeImage(this)" /></td>
+      <td><img src="https://via.placeholder.com/100" alt="Art Fair" title="Art Fair" ondblclick="enlargeImage(this)" /></td>
+      <td><img src="https://via.placeholder.com/100" alt="Tech Meetup" title="Tech Meetup" ondblclick="enlargeImage(this)" /></td>
+    </tr>
+    <tr>
+      <td><img src="https://via.placeholder.com/100" alt="Yoga Day" title="Yoga Day" ondblclick="enlargeImage(this)" /></td>
+      <td><img src="https://via.placeholder.com/100" alt="Dance Night" title="Dance Night" ondblclick="enlargeImage(this)" /></td>
+      <td><img src="https://via.placeholder.com/100" alt="Food Fest" title="Food Fest" ondblclick="enlargeImage(this)" /></td>
+    </tr>
+  </table>
+</section>
+
+<!-- Registration Form -->
+<section>
+  <h2>Register for an Event</h2>
+  <form onsubmit="showConfirmation(); return false;">
+    <label>Name: <input type="text" name="name" placeholder="Your name" required autofocus></label><br><br>
+    <label>Email: <input type="email" name="email" placeholder="you@example.com" required></label><br><br>
+    <label>Phone: <input type="text" name="phone" onblur="validatePhone(this)" placeholder="10-digit" required></label><br><br>
+    <label>Date: <input type="date" name="date" required></label><br><br>
+    <label>Event Type:
+      <select id="eventType" onchange="showFee()" required>
+        <option value="">Select</option>
+        <option value="music">Music Fest</option>
+        <option value="art">Art Expo</option>
+        <option value="tech">Tech Talk</option>
+      </select>
+    </label><br><br>
+    Fee: <span id="feeOutput"></span><br><br>
+    <label>Message:<br>
+      <textarea rows="4" cols="40" onkeyup="countChars(this)"></textarea><br>
+      <span id="charCount">0 characters</span>
+    </label><br><br>
+    <button type="submit">Submit</button>
+    <output id="outputMessage" style="margin-left:10px; font-weight: bold;"></output>
+  </form>
+</section>
+
+<!-- Video Section -->
+<section>
+  <h2>Promo Video</h2>
+  <video width="320" controls oncanplay="videoReady()">
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+  <div id="videoStatus" class="highlight"></div>
+</section>
+
+<!-- Geolocation -->
+<section>
+  <h2>Find Nearby Events</h2>
+  <button onclick="getLocation()">Find My Location</button>
+  <p id="locationOutput" class="highlight"></p>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+  <p>&copy; 2025 Local Community Event Portal</p>
+  <button onclick="clearPrefs()">Clear Preferences</button>
+</footer>
+
+</body>
+</html>
