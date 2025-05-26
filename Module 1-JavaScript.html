@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Community Event Portal</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    .event-card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; display: none; }
+    #eventsContainer { margin-top: 20px; }
+    #message { color: green; }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Local Community Event Portal</h1>
+
+<form id="registerForm">
+  <input type="text" name="name" placeholder="Name" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <select name="event" id="eventSelect">
+    <option value="">Choose Event</option>
+  </select>
+  <button type="submit" id="registerBtn">Register</button>
+  <p id="formError" style="color:red;"></p>
+</form>
+
+<input type="text" id="searchInput" placeholder="Search by name..." />
+
+<select id="categoryFilter">
+  <option value="">All Categories</option>
+  <option value="Music">Music</option>
+  <option value="Art">Art</option>
+</select>
+
+<div id="eventsContainer"></div>
+<p id="message"></p>
+
+<script>
+  // 1. Setup & Alert
+  console.log("Welcome to the Community Portal");
+  window.onload = () => alert("Page fully loaded!");
+
+  // 2. Variables, Template Literals
+  const sampleEvent = { name: "Art Fest", date: "2025-08-01", seats: 10 };
+  let availableSeats = sampleEvent.seats;
+  console.log(`${sampleEvent.name} on ${sampleEvent.date}, Seats: ${availableSeats}`);
+
+  // 3. Event List with conditionals & error handling
+  const events = [
+    { name: "Music Gala", date: "2025-12-01", category: "Music", seats: 5 },
+    { name: "Art Expo", date: "2025-10-15", category: "Art", seats: 0 },
+    { name: "Tech Meet", date: "2024-02-01", category: "Tech", seats: 3 },
+  ];
+
+  function renderEvents(filtered = events) {
+    const container = document.getElementById("eventsContainer");
+    container.innerHTML = "";
+    filtered.forEach((event, index) => {
+      const isUpcoming = new Date(event.date) > new Date();
+      const hasSeats = event.seats > 0;
+      if (isUpcoming && hasSeats) {
+        const card = document.createElement("div");
+        card.className = "event-card";
+        card.innerHTML = `
+          <strong>${event.name}</strong> (${event.category}) - ${event.date}
+          <button onclick="register(${index})">Register</button>
+        `;
+        container.appendChild(card);
+      }
+    });
+    $(".event-card").fadeIn();
+  }
+
+  function register(index) {
+    try {
+      if (events[index].seats <= 0) throw new Error("No seats left!");
+      events[index].seats--;
+      alert(`Registered for ${events[index].name}`);
+      renderEvents();
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
+  // 4. Functions and Closure for total registrations
+  const registerTracker = (() => {
+    const totals = {};
+    return (category) => {
+      totals[category] = (totals[category] || 0) + 1;
+      return totals[category];
+    };
+  })();
+
+  function filterEventsByCategory(category) {
+    return events.filter(ev => !category || ev.category === category);
+  }
+
+  // 5. Objects and Prototypes
+  function Event(name, date, category, seats) {
+    this.name = name;
+    this.date = date;
+    this.category = category;
+    this.seats = seats;
+  }
+
+  Event.prototype.checkAvailability = function () {
+    return this.seats > 0;
+  };
+
+  console.log(Object.entries(new Event("Yoga Day", "2025-11-15", "Health", 15)));
+
+  // 6. Array methods
+  events.push(new Event("Dance Show", "2025-11-01", "Music", 7));
+  const musicEvents = events.filter(ev => ev.category === "Music");
+  const eventCards = musicEvents.map(ev => `🎵 ${ev.name}`);
+  console.log("Music Event Cards:", eventCards);
+
+  // 7. DOM Manipulation
+  document.addEventListener("DOMContentLoaded", () => {
+    renderEvents();
+    const select = document.getElementById("eventSelect");
+    events.forEach(ev => {
+      const opt = document.createElement("option");
+      opt.value = ev.name;
+      opt.textContent = ev.name;
+      select.appendChild(opt);
+    });
+  });
+
+  // 8. Event Handling
+  document.getElementById("categoryFilter").onchange = function () {
+    renderEvents(filterEventsByCategory(this.value));
+  };
+
+  document.getElementById("searchInput").onkeydown = function () {
+    const val = this.value.toLowerCase();
+    const filtered = events.filter(e => e.name.toLowerCase().includes(val));
+    renderEvents(filtered);
+  };
+
+  // 9. Async/Await with mock fetch
+  async function fetchEvents() {
+    document.getElementById("message").textContent = "Loading...";
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(events);
+        document.getElementById("message").textContent = "";
+      }, 1000);
+    });
+  }
+
+  fetchEvents().then(renderEvents).catch(err => console.error("Fetch error", err));
+
+  // 10. Modern JS (destructuring, spread)
+  const clone = [...events];
+  const [{ name, category }] = clone;
+  console.log(`First Event: ${name} - ${category}`);
+
+  // 11. Form Handling
+  document.getElementById("registerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const { name, email, event: ev } = e.target.elements;
+    if (!name.value || !email.value || !ev.value) {
+      document.getElementById("formError").textContent = "All fields are required!";
+      return;
+    }
+    document.getElementById("formError").textContent = "";
+
+    // 12. Fetch POST
+    setTimeout(() => {
+      console.log("Submitted:", { name: name.value, email: email.value, event: ev.value });
+      document.getElementById("message").textContent = "Registration successful!";
+      e.target.reset();
+    }, 1000);
+  });
+
+  // 13. Debug with logs
+  console.log("Debug: Registration form attached.");
+
+  // 14. jQuery Enhancements
+  $('#registerBtn').click(() => {
+    console.log("jQuery: Register button clicked");
+  });
+
+</script>
+
+</body>
+</html>
